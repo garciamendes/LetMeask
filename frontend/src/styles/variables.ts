@@ -1,0 +1,17 @@
+export const COLORS = {
+  Background: "#F8F8F8",
+  Detail: "#FEFEFE",
+  Black: "#29292E",
+  Shadow: "#050206",
+  Purple: "#835AFD",
+  Danger: "#E73F5D",
+  GrayDark: "#737380",
+  GrayMedium: "#A8A8B3",
+  GrayLight: "#DBDCDD",
+  PinkDark: "#E559F9",
+  PinkLight: "#D67EE2",
+  HoverPurple: "#6F4BD8",
+  HoverDanger: "#D73754",
+  HoverGrayMedium: "#7E7E86",
+  HoverGrayLight: "#CECECE",
+};

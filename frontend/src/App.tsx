@@ -1,9 +1,15 @@
 // React
 import React from 'react';
 
+// Local
+import { GlobalStyle } from "./styles/global";
+
 function App() {
   return (
-    <h1>Hello</h1>
+    <>
+      <GlobalStyle />
+      <h1>Hello</h1>
+    </>
   );
 }
 
