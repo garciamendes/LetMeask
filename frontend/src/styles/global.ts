@@ -11,7 +11,8 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
     font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscal
+    -moz-osx-font-smoothing: grayscal;
+    outline: none;
   }
 
   html,
@@ -19,6 +20,30 @@ export const GlobalStyle = createGlobalStyle`
   #root {
     height: 100%;
     background: ${COLORS.Background};
+    
+    .button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 50px;
+      border: none;
+      color: ${COLORS.Detail};
+      font-size: 16px;
+      border-radius: 8px;
+      background: ${COLORS.Purple};
+      transition: .24s;
+
+      &:not(:disabled):hover {
+        background: ${COLORS.HoverPurple};
+      }
+
+      &:disabled {
+        opacity: .6;
+        cursor: not-allowed;
+      }
+    }
   }
 
 `;
