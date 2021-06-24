@@ -44,6 +44,43 @@ export const GlobalStyle = createGlobalStyle`
         cursor: not-allowed;
       }
     }
+
+    .content_copy_code {
+      display: flex;
+      align-items: center;
+      width: 70%;
+      height: 40px;
+      border-radius: 10px;
+      background: none;
+      border: 1px solid ${COLORS.Purple};
+      transition: .24s;
+
+      strong {
+        font-size: 14px;
+
+        span {
+          color: ${COLORS.Purple}
+        }
+      }
+
+      .btn_copy {
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 20%;
+        margin-right: 4%;
+        border: none;
+        border-radius: 8px 0 0 8px;
+        background: ${COLORS.Purple};
+        transition: .24s;
+
+        &:hover {
+          background: ${COLORS.HoverPurple};
+        }
+      }
+    }
   }
 
 `;

@@ -1,56 +1,160 @@
 // React
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+// Third party
+import { toast } from 'react-toastify';
 
 // Local
 import {
   ContainerRoot,
   ContainerInfoRoom,
-  ContainerAsk,
   ContainerMainRoom,
-  ContainerEmptyAsks
+  ContainerForm,
 } from './styled';
-import EmptyAsk from "../../static/images/empty-questions.svg";
+//import EmptyAsk from "../../static/images/empty-questions.svg";
 
 // Components
 import { Header } from "../../components/Header";
-import { Questions, QuetionsProps } from "../../components/Questions";
+import { Button } from '../../components/Button';
+
+// Services
+import { useAuth } from '../../hooks/useAuth';
+import { database } from '../../services/firebase';
+
+type RoomParams = {
+  id: string
+}
+
+type FirebaseQuestions = Record<string, {
+  author: {
+    name: string,
+    avatar: string
+  },
+  content: string,
+  isHighlighted: boolean,
+  isAnswered: boolean
+}>
+
+type Question = {
+  id: string;
+  author: {
+    name: string,
+    avatar: string
+  },
+  content: string,
+  isHighlighted: boolean,
+  isAnswered: boolean
+}
 
 export function Rooms() {
-  const [askAmount, setAskAmount] = useState([1]);
+  const params = useParams<RoomParams>();
+  const roomId = params.id
+  const { user } = useAuth();
+
+  const [newQuestion, setNewQuestion] = useState("");
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [title, setTitle] = useState("");
+
+  useEffect(() => {
+    const roomRef = database.ref(`rooms/${roomId}`);
+
+    roomRef.on("value", room => {
+      const databaseRoom = room.val();
+      const firebaseQuestions: FirebaseQuestions = databaseRoom.questions ?? {};
+
+      const parsedQuestions = Object.entries(firebaseQuestions).map(([key, value]) => {
+        return {
+          id: key,
+          content: value.content,
+          author: value.author,
+          isAnswered: value.isAnswered,
+          isHighlighted: value.isHighlighted,
+        }
+      })
+
+      setTitle(databaseRoom.title);
+      setQuestions(parsedQuestions);
+    })
+  }, [roomId]);
+
+  async function handleSendQuestion(event: FormEvent) {
+    event.preventDefault();
+
+    if (newQuestion.trim() === "") {
+
+      return toast.error('Digite uma pergunta', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+
+    if (!user) {
+
+      return toast.warning('Você precisa inscreve-se para enviar perguntas', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+
+    const question = {
+      content: newQuestion,
+      author: {
+        name: user.name,
+        avatar: user.avatar
+      },
+      isHighlighted: false,
+      isAnswered: false
+    }
+
+    await database.ref(`rooms/${roomId}/questions`).push(question);
+    setNewQuestion("");
+
+  }
 
   return (
     <ContainerRoot>
-      <Header />
+      <Header isAdmin={false} />
       <ContainerMainRoom>
         <ContainerInfoRoom>
-          <h2>Sala React Q{"&"}A</h2>
+          <h2>Sala {title}</h2>
 
-          {askAmount.length > 0 && (
+          {questions.length > 0 && (
             <span>
-              {askAmount} perguntas
+              {questions.length} pergunta(s)
             </span>
           )}
         </ContainerInfoRoom>
-        <ContainerAsk>
+        <ContainerForm onSubmit={handleSendQuestion}>
+          <textarea
+            placeholder="O que você quer perguntar?"
+            value={newQuestion}
+            onChange={(e) => setNewQuestion(e.target.value)}
+          />
+          <div className="container_send_question_login" >
+            {user ? (
+              <div className="content_info_user">
+                <img className="img_user" src={user.avatar} alt={user.name} />
+                <span className="user_name">{user.name}</span>
+              </div>
+            ) : (
+              <span>
+                Para enviar uma pergunta, <button>Faça seu login.</button>
+              </span>
+            )}
+            <Button style={{ width: "20%" }} disabled={!user} >Enviar pergunta</Button>
+          </div>
+        </ContainerForm>
 
-          {askAmount.length > 0 && (
-            <div className="scroll_questions">
-              <Questions
-                question={"Testaasdasdasdasdndo"}
-                avatar={"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHVzZXJ8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"}
-                name={"Matheus Garcia"}
-              />
-            </div>
-          )}
-
-          {askAmount.length === 0 && (
-            <ContainerEmptyAsks>
-              <img src={EmptyAsk} alt="empty asks" />
-              <h2>Nenhuma pergunta por aqui...</h2>
-              <p>Envie o código desta sala para seus amigos e comece a responder perguntas!</p>
-            </ContainerEmptyAsks>
-          )}
-        </ContainerAsk>
+        {JSON.stringify(questions)}
       </ContainerMainRoom>
     </ContainerRoot>
   )

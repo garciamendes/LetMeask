@@ -26,48 +26,15 @@ export const ContainerRoot = styled.div`
 
     .content_btns {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      width: 27%;
+      width: 40%;
+
     }
-
-    .content_copy_code {
-      display: flex;
-      align-items: center;
-      width: 53%;
-      height: 40px;
-      border-radius: 10px;
-      background: none;
-      border: 1px solid ${COLORS.Purple};
-      transition: .24s;
-
-      strong {
-        font-size: 14px;
-      }
-
-      .btn_copy {
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        width: 30%;
-        margin-right: 4%;
-        border: none;
-        border-radius: 8px 0 0 8px;
-        background: ${COLORS.Purple};
-        transition: .24s;
-
-        &:hover {
-          background: ${COLORS.HoverPurple};
-        }
-      }
-    }
-
+    
     .content_exit_room {
       cursor: pointer;
       height: 40px;
-      width: 41%;
+      width: 25%;
       border-radius: 8px;
       background: none;
       color: ${COLORS.Purple};

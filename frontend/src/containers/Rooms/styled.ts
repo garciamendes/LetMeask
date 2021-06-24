@@ -77,3 +77,72 @@ export const ContainerEmptyAsks = styled.div`
     color: ${COLORS.GrayDark};
   }
 `
+
+export const ContainerForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  margin: 2% 0;
+  width: 100%;
+
+  textarea {
+    overflow-y: auto;
+    resize: none;
+    border: none;
+    padding: 1%;
+    font-size: 17px;
+    min-height: 100px;
+    box-shadow: 0px 2px 12px rgba(0, 0, 0, .04);
+    border-radius: 10px;
+
+    &::-webkit-scrollbar {
+      width: 2px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: ${COLORS.HoverPurple};
+    }
+  }
+
+  .container_send_question_login {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1%;
+
+    .content_info_user {
+        display: flex;
+        align-items: center;
+        width: 35%;
+
+        .img_user {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+        }
+
+        .user_name {
+          margin-left: 2%;
+          color: ${COLORS.GrayDark};
+        }
+      }
+
+    span {
+      font-size: 16px;
+      color: ${COLORS.GrayDark};
+
+      button {
+        cursor: pointer;
+        border: none;
+        background: none;
+        font-size: 16px;
+        text-decoration: underline;
+        color: ${COLORS.PinkDark};
+        transition: .24s;
+
+        &:hover {
+          color: ${COLORS.PinkLight};
+        } 
+      }
+    }
+  }
+`

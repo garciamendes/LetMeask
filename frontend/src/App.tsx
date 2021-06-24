@@ -1,6 +1,10 @@
 // React
 import React from 'react';
 
+// Third party
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 // Local
 import { GlobalStyle } from "./styles/global";
 
@@ -15,6 +19,7 @@ function App() {
   return (
     <>
       <AuthContextProvider>
+        <ToastContainer />
         <GlobalStyle />
         <Routes />
       </AuthContextProvider>
