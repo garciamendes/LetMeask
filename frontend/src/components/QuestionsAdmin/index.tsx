@@ -7,7 +7,9 @@ import {
   ContainerInfoQuestion,
   ContainerInfoUser
 } from "./styled";
-import Like from "../../static/images/like.svg";
+import Check from "../../static/images/check.svg";
+import Answer from "../../static/images/answer.svg";
+import Delete from "../../static/images/delete.svg";
 
 export type QuetionsProps = {
   question: string;
@@ -15,7 +17,7 @@ export type QuetionsProps = {
   avatar: string;
 }
 
-export function Questions(props: QuetionsProps) {
+export function QuestionsAdmin(props: QuetionsProps) {
   return (
     <ContainerRoot>
       <ContainerInfoQuestion>
@@ -27,8 +29,9 @@ export function Questions(props: QuetionsProps) {
           <span>{props.name}</span>
         </div>
         <div className="content_manipulation_question">
-          <span className="amount_likes">10</span>
-          <img src={Like} alt="check" />
+          <img src={Check} alt="check" />
+          <img src={Answer} alt="answer" />
+          <img src={Delete} alt="delete" />
         </div>
       </ContainerInfoUser>
     </ContainerRoot>

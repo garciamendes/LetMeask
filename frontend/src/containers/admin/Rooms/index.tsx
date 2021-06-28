@@ -13,7 +13,7 @@ import EmptyAsk from "../../../static/images/empty-questions.svg";
 
 // Components
 import { Header } from "../../../components/Header";
-import { Questions } from "../../../components/Questions";
+import { QuestionsAdmin } from "../../../components/QuestionsAdmin";
 
 export function AdminRoom() {
   const [askAmount, setAskAmount] = useState([1]);
@@ -35,7 +35,7 @@ export function AdminRoom() {
 
           {askAmount.length > 0 && (
             <div className="scroll_questions">
-              <Questions
+              <QuestionsAdmin
                 question={"Testaasdasdasdasdndo"}
                 avatar={"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHVzZXJ8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"}
                 name={"Matheus Garcia"}

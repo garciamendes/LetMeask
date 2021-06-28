@@ -52,13 +52,7 @@ export const ContainerInfoUser = styled.div`
     align-items: center;
     justify-content: space-between;
     align-self: flex-end;
-    width: 6%;
-
-    .amount_likes {
-      font-size: 18px;
-      margin-top: 6px;
-      color: ${COLORS.GrayDark}
-    }
+    width: 12%;
 
     img {
       cursor: pointer;

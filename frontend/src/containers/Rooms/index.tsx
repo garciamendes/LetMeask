@@ -21,6 +21,7 @@ import { Button } from '../../components/Button';
 // Services
 import { useAuth } from '../../hooks/useAuth';
 import { database } from '../../services/firebase';
+import { Questions } from '../../components/Questions';
 
 type RoomParams = {
   id: string
@@ -33,7 +34,7 @@ type FirebaseQuestions = Record<string, {
   },
   content: string,
   isHighlighted: boolean,
-  isAnswered: boolean
+  isAnswered: boolean,
 }>
 
 type Question = {
@@ -44,7 +45,7 @@ type Question = {
   },
   content: string,
   isHighlighted: boolean,
-  isAnswered: boolean
+  isAnswered: boolean,
 }
 
 export function Rooms() {
@@ -112,7 +113,7 @@ export function Rooms() {
         avatar: user.avatar
       },
       isHighlighted: false,
-      isAnswered: false
+      isAnswered: false,
     }
 
     await database.ref(`rooms/${roomId}/questions`).push(question);
@@ -154,7 +155,16 @@ export function Rooms() {
           </div>
         </ContainerForm>
 
-        {JSON.stringify(questions)}
+        <div className="scroll_questions">
+          {questions.map((question) => (
+            <Questions
+              key={question.id}
+              question={question.content}
+              name={question.author.name}
+              avatar={question.author.avatar}
+            />
+          ))}
+        </div>
       </ContainerMainRoom>
     </ContainerRoot>
   )

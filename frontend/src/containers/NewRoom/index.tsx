@@ -2,6 +2,9 @@
 import React, { FormEvent, useState } from 'react';
 import { Link, useHistory } from "react-router-dom";
 
+// Third party
+import { toast } from 'react-toastify';
+
 // Components
 import { Button } from "../../components/Button";
 
@@ -30,7 +33,14 @@ export function NewRoom() {
     event.preventDefault();
 
     if (newRoom.trim() === "") {
-      return;
+      return toast.warning('Preecha os dados', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
     }
 
     const roomRef = database.ref("rooms")
