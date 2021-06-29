@@ -13,7 +13,7 @@ type RoomParams = {
   id: string
 } 
 
-export function Header({ isAdmin }: { isAdmin: boolean }) {
+export function Header({ isAdmin, onEnd }: { isAdmin: boolean, onEnd?: any }) {
   const params = useParams<RoomParams>();
   const roomId = params.id
 
@@ -26,7 +26,7 @@ export function Header({ isAdmin }: { isAdmin: boolean }) {
         <div className="content_btns" style={{ justifyContent: `${isAdmin ? "space-between" : "flex-end"}` }} >
           <RoomCode code={roomId} />
           {isAdmin && (
-            <button className="content_exit_room">Encerrar sala</button>
+            <button onClick={onEnd} className="content_exit_room">Encerrar sala</button>
           )}
         </div>
       </div>

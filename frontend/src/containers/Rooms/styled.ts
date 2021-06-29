@@ -16,7 +16,7 @@ export const ContainerRoot = styled.div`
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
-    height: 56%;
+    height: 60%;
     width: 100%;
 
     &::-webkit-scrollbar {
@@ -85,11 +85,13 @@ export const ContainerEmptyAsks = styled.div`
   }
 
   h2 {
+    font-size: 19px;
     margin-bottom: 2%;
     color: ${COLORS.Black};
   }
 
   p {
+    font-size: 14px;
     text-align: center;
     margin-bottom: 1%;
     max-width: 330px;

@@ -1,5 +1,5 @@
 // React
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 // Third party
@@ -11,8 +11,9 @@ import {
   ContainerInfoRoom,
   ContainerMainRoom,
   ContainerForm,
+  ContainerEmptyAsks
 } from './styled';
-//import EmptyAsk from "../../static/images/empty-questions.svg";
+import EmptyAsk from "../../static/images/empty-questions.svg";
 
 // Components
 import { Header } from "../../components/Header";
@@ -22,62 +23,24 @@ import { Button } from '../../components/Button';
 import { useAuth } from '../../hooks/useAuth';
 import { database } from '../../services/firebase';
 import { Questions } from '../../components/Questions';
+import { useRoom } from '../../hooks/useRoom';
 
 type RoomParams = {
   id: string
 }
 
-type FirebaseQuestions = Record<string, {
-  author: {
-    name: string,
-    avatar: string
-  },
-  content: string,
-  isHighlighted: boolean,
-  isAnswered: boolean,
-}>
-
-type Question = {
-  id: string;
-  author: {
-    name: string,
-    avatar: string
-  },
-  content: string,
-  isHighlighted: boolean,
-  isAnswered: boolean,
-}
-
 export function Rooms() {
   const params = useParams<RoomParams>();
   const roomId = params.id
-  const { user } = useAuth();
-
+  const { user, signInWithGoogle } = useAuth();
+  const { questions, title } = useRoom(roomId);
   const [newQuestion, setNewQuestion] = useState("");
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const [title, setTitle] = useState("");
 
-  useEffect(() => {
-    const roomRef = database.ref(`rooms/${roomId}`);
-
-    roomRef.on("value", room => {
-      const databaseRoom = room.val();
-      const firebaseQuestions: FirebaseQuestions = databaseRoom.questions ?? {};
-
-      const parsedQuestions = Object.entries(firebaseQuestions).map(([key, value]) => {
-        return {
-          id: key,
-          content: value.content,
-          author: value.author,
-          isAnswered: value.isAnswered,
-          isHighlighted: value.isHighlighted,
-        }
-      })
-
-      setTitle(databaseRoom.title);
-      setQuestions(parsedQuestions);
-    })
-  }, [roomId]);
+  async function handleSignIn() {
+    if (!user) {
+      await signInWithGoogle();
+    }
+  }
 
   async function handleSendQuestion(event: FormEvent) {
     event.preventDefault();
@@ -121,6 +84,16 @@ export function Rooms() {
 
   }
 
+  async function handleLikeQustions(questionId: string, likeId: string | undefined) {
+    if (likeId) {
+      await database.ref(`rooms/${roomId}/questions/${questionId}/likes/${likeId}`).remove();
+    } else {
+      await database.ref(`rooms/${roomId}/questions/${questionId}/likes`).push({
+        authorId: user?.id,
+      });
+    }
+  }
+
   return (
     <ContainerRoot>
       <Header isAdmin={false} />
@@ -148,23 +121,35 @@ export function Rooms() {
               </div>
             ) : (
               <span>
-                Para enviar uma pergunta, <button>Faça seu login.</button>
+                Para enviar uma pergunta, <button type={'button'} onClick={handleSignIn}>Faça seu login.</button>
               </span>
             )}
             <Button style={{ width: "20%" }} disabled={!user} >Enviar pergunta</Button>
           </div>
         </ContainerForm>
 
-        <div className="scroll_questions">
-          {questions.map((question) => (
-            <Questions
-              key={question.id}
-              question={question.content}
-              name={question.author.name}
-              avatar={question.author.avatar}
-            />
-          ))}
-        </div>
+        {questions.length <= 0 ? (
+          <ContainerEmptyAsks>
+            <img src={EmptyAsk} alt="empty asks" />
+            <h2>Nenhuma pergunta por aqui...</h2>
+            <p>Envie o código desta sala para seus amigos e comece a responder perguntas!</p>
+          </ContainerEmptyAsks>
+        ) : (
+          <div className="scroll_questions">
+            {questions.map((question) => (
+              <Questions
+                onClick={() => handleLikeQustions(question.id, question.likeId)}
+                Liked={question.likeId}
+                countLike={question.likeCount > 0 && question.likeCount}
+                key={question.id}
+                question={question.content}
+                name={question.author.name}
+                avatar={question.author.avatar}
+              />
+            ))}
+          </div>
+        )}
+
       </ContainerMainRoom>
     </ContainerRoot>
   )

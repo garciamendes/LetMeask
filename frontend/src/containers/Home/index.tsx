@@ -2,6 +2,9 @@
 import React, { FormEvent, useState } from 'react';
 import { useHistory } from "react-router-dom";
 
+// Third party
+import { toast } from 'react-toastify';
+
 // Components
 import { Button } from "../../components/Button";
 
@@ -51,6 +54,17 @@ export function Home() {
     if (!roomRef.exists()) {
       alert("Room does not exists.")
       return;
+    }
+
+    if (roomRef.val().endedAt) {
+      return toast.warning('Room already closed', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
     }
 
     history.push(`/rooms/${roomCode}`);

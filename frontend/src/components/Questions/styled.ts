@@ -47,21 +47,34 @@ export const ContainerInfoUser = styled.div`
     }
   }
 
-  .content_manipulation_question {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    align-self: flex-end;
-    width: 6%;
+  button {
+    cursor: pointer;
+    background: none;
+    border: none;
 
-    .amount_likes {
-      font-size: 18px;
-      margin-top: 6px;
-      color: ${COLORS.GrayDark}
+    &.content_manipulation_question {
+      display: flex;
+      align-items: center;
+      align-self: flex-end;
+      gap: 10px;
+
+      .amount_likes {
+        font-size: 18px;
+        margin-top: 6px;
+        color: ${COLORS.GrayDark}
+      }
     }
 
-    img {
-      cursor: pointer;
+    &.liked {
+
+      .amount_likes {
+        color: ${COLORS.Purple};
+      }
+
+      svg path {
+        stroke: ${COLORS.Purple};
+      }
     }
   }
+
 `

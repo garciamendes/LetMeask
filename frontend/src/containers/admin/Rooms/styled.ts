@@ -5,27 +5,45 @@ import styled from "styled-components";
 import { COLORS } from "../../../styles/variables";
 
 export const ContainerRoot = styled.div`
+  overflow: hidden;
   display: flex;
   align-items: center;
   flex-direction: column;
   height: 100%;
+
+  .scroll_questions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    height: 93%;
+    width: 100%;
+
+    &::-webkit-scrollbar {
+      width: 2px;
+      height: 0;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: ${COLORS.HoverPurple};
+    }
+  }
 `
 
 export const ContainerMainRoom = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  height: calc(100% - 60px);
+  height: calc(100% - 70px);
   width: 100%;
   max-width: 70%;
-  padding-top: 2%;
+  padding-top: 1%;
 `
 
 export const ContainerInfoRoom = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 36px;
 
   h2 {
     margin-right: 2%;
@@ -46,11 +64,11 @@ export const ContainerInfoRoom = styled.div`
 `
 
 export const ContainerAsk = styled.div`
-  flex: 1;
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 2%;
+  height: 100%;
+  margin-top: 1%;
 `
 
 export const ContainerEmptyAsks = styled.div`

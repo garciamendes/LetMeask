@@ -1,5 +1,6 @@
 // React
 import React, { useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 
 // Local
 import {
@@ -15,35 +16,68 @@ import EmptyAsk from "../../../static/images/empty-questions.svg";
 import { Header } from "../../../components/Header";
 import { QuestionsAdmin } from "../../../components/QuestionsAdmin";
 
+// Hooks
+import { useRoom } from '../../../hooks/useRoom';
+
+// Services
+import { database } from '../../../services/firebase';
+
+type RoomParams = {
+  id: string
+}
+
 export function AdminRoom() {
-  const [askAmount, setAskAmount] = useState([1]);
+  const history = useHistory();
+  const params = useParams<RoomParams>();
+  const roomId = params.id
+  //const { user } = useAuth();
+  const { questions, title } = useRoom(roomId);
+
+  async function handleDeleteQuestion(questionId: string) {
+    if (window.confirm("Tem certeza que você deseja excluir esta pergunta?")) {
+      await database.ref(`rooms/${roomId}/questions/${questionId}`).remove()
+    }
+  }
+
+  async function handleEndRoom() {
+    await database.ref(`rooms/${roomId}`).update({
+      endedAt: new Date(),
+    })
+
+    history.push('/')
+  }
 
   return (
     <ContainerRoot>
-      <Header isAdmin />
+      <Header isAdmin onEnd={handleEndRoom} />
       <ContainerMainRoom>
         <ContainerInfoRoom>
-          <h2>Sala React Q{"&"}A</h2>
+          <h2>Sala {title}</h2>
 
-          {askAmount.length > 0 && (
+          {questions.length > 0 && (
             <span>
-              {askAmount} perguntas
+              {questions.length} perguntas
             </span>
           )}
         </ContainerInfoRoom>
         <ContainerAsk>
 
-          {askAmount.length > 0 && (
+          {questions.length > 0 && (
             <div className="scroll_questions">
-              <QuestionsAdmin
-                question={"Testaasdasdasdasdndo"}
-                avatar={"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHVzZXJ8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"}
-                name={"Matheus Garcia"}
-              />
+              {questions.map(question => (
+                <QuestionsAdmin
+                  key={question.id}
+                  question={question.content}
+                  avatar={question.author.avatar}
+                  name={question.author.name}
+
+                  onDelete={() => handleDeleteQuestion(question.id)}
+                />
+              ))}
             </div>
           )}
 
-          {askAmount.length === 0 && (
+          {questions.length <= 0 && (
             <ContainerEmptyAsks>
               <img src={EmptyAsk} alt="empty asks" />
               <h2>Nenhuma pergunta por aqui...</h2>

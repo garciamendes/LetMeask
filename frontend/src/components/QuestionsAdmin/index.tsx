@@ -17,7 +17,7 @@ export type QuetionsProps = {
   avatar: string;
 }
 
-export function QuestionsAdmin(props: QuetionsProps) {
+export function QuestionsAdmin(props: any) {
   return (
     <ContainerRoot>
       <ContainerInfoQuestion>
@@ -31,7 +31,7 @@ export function QuestionsAdmin(props: QuetionsProps) {
         <div className="content_manipulation_question">
           <img src={Check} alt="check" />
           <img src={Answer} alt="answer" />
-          <img src={Delete} alt="delete" />
+          <img onClick={props.onDelete} src={Delete} alt="delete" />
         </div>
       </ContainerInfoUser>
     </ContainerRoot>
