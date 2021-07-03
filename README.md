@@ -1,11 +1,11 @@
 <h1 align="center">
-  <img alt="Letmeask" title="Letmeask" src=".github/logo.png" />
+  <img alt="Letmeask" title="Letmeask" src="https://user-images.githubusercontent.com/50915625/124365276-bd0dbb00-dbfb-11eb-9355-8ef030345eac.png" />
 </h1>
 
 <br>
 
 <p align="center">
-  <img alt="Letmeask" src=".github/podcastr.png" width="100%">
+  <img alt="Letmeask" src="https://user-images.githubusercontent.com/50915625/124365216-5be5e780-dbfb-11eb-8ef5-37f13f9d22b7.png" width="100%">
 </p>
 
 ## ✨ Tecnologias
@@ -19,7 +19,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 ## 💻 Projeto
 
-O podcastr é um app para reprodução de episódios em áudio do seu podcast favorito.
+Um projeto feito para tirar dúvidas, e obter conhecimentos através de perguntas e respostas.
 
 ## 🔖 Layout
 
@@ -30,7 +30,7 @@ Você pode visualizar o layout do projeto através [desse link](https://www.figm
 - Clone o repositório
 - (`usando yarn`)Instale as dependências com `yarn`
 - (`usando yarn`)Inicie o servidor com `yarn start`
-- ## OR
+#### OR
 - (`usando npm`)Instale as dependências com `npm install`
 - (`usando npm`)Inicie o servidor com `npm run start`
 
