@@ -5,6 +5,7 @@ export const COLORS = {
   Shadow: "#050206",
   Purple: "#835AFD",
   Danger: "#E73F5D",
+  BackgroundGoogleBtn: "#EA4335",
   GrayDark: "#737380",
   GrayMedium: "#A8A8B3",
   GrayLight: "#DBDCDD",
