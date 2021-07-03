@@ -145,6 +145,8 @@ export function Rooms() {
                 question={question.content}
                 name={question.author.name}
                 avatar={question.author.avatar}
+                isAnswered={question.isAnswered}
+                isHighlighted={question.isHighlighted}
               />
             ))}
           </div>

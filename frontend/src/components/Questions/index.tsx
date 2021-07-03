@@ -16,7 +16,12 @@ export type QuetionsProps = {
 
 export function Questions(props: any) {
   return (
-    <ContainerRoot>
+    <ContainerRoot
+      style={{
+        background: `${props.isAnswered ? "#DBDCDD" : props.isHighlighted ? "#F4F0FF" : ""}`,
+        border: `${props.isHighlighted ? "1px solid #835AFD" : ""}`
+      }}
+    >
       <ContainerInfoQuestion>
         <p>{props.question} </p>
       </ContainerInfoQuestion>
@@ -26,10 +31,13 @@ export function Questions(props: any) {
           <span>{props.name}</span>
         </div>
         <button
+          style={{
+            cursor: `${props.isAnswered ? "not-allowed" : "pointer"}`
+          }}
           className={`content_manipulation_question ${props.Liked ? "liked" : ""}`} // liked
           type="button"
           aria-label="Marcar como gostei"
-          onClick={props.onClick}
+          onClick={props.isAnswered ? {} : props.onClick}
         >
           <span className="amount_likes">{props.countLike}</span>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
