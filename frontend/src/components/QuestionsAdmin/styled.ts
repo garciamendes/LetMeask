@@ -54,8 +54,16 @@ export const ContainerInfoUser = styled.div`
     align-self: flex-end;
     width: 12%;
 
-    img {
-      cursor: pointer;
+    div {
+
+      svg {
+        cursor: pointer;
+        transition: .24s;
+
+        &:hover {
+          transform: scale(1.3);
+        }
+      }
     }
   }
 `

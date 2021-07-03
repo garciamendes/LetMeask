@@ -33,7 +33,7 @@ export function NewRoom() {
     event.preventDefault();
 
     if (newRoom.trim() === "") {
-      return toast.warning('Preecha os dados', {
+      return toast.warning('Digite um nome para a sala', {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
@@ -50,7 +50,7 @@ export function NewRoom() {
       authorId: user?.id,
     });
 
-    history.push(`/rooms/${firebaseRoom.key}`);
+    history.push(`/rooms/admin/${firebaseRoom.key}`);
   }
 
   return (

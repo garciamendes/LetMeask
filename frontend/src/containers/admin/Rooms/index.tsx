@@ -15,12 +15,14 @@ import EmptyAsk from "../../../static/images/empty-questions.svg";
 // Components
 import { Header } from "../../../components/Header";
 import { QuestionsAdmin } from "../../../components/QuestionsAdmin";
+import { ModalDeleteQuestion } from '../../../components/ModalDeleteQuestion';
 
 // Hooks
 import { useRoom } from '../../../hooks/useRoom';
 
 // Services
 import { database } from '../../../services/firebase';
+import { ModalCloseRoom } from '../../../components/ModalCloseRoom';
 
 type RoomParams = {
   id: string
@@ -33,10 +35,30 @@ export function AdminRoom() {
   //const { user } = useAuth();
   const { questions, title } = useRoom(roomId);
 
+  const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
+  const [openModalCloseRoom, setOpenModalCloseRoom] = useState<boolean>(false);
+
+  const [idQuestion, setIdQuestion] = useState<any>(null);
+
   async function handleDeleteQuestion(questionId: string) {
-    if (window.confirm("Tem certeza que você deseja excluir esta pergunta?")) {
-      await database.ref(`rooms/${roomId}/questions/${questionId}`).remove()
-    }
+    await database.ref(`rooms/${roomId}/questions/${questionId}`).remove();
+    setOpenModalDelete(false);
+  }
+
+  // Foi respondida
+  async function handleAnsweredQuestion(questionId: string) {
+    await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
+      isAnswered: true,
+      isHighlighted: false
+    });
+  }
+
+  // Respondendo
+  async function handleHighlightedQuestion(questionId: string) {
+    await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
+      isHighlighted: true,
+      isAnswered: false
+    });
   }
 
   async function handleEndRoom() {
@@ -49,7 +71,21 @@ export function AdminRoom() {
 
   return (
     <ContainerRoot>
-      <Header isAdmin onEnd={handleEndRoom} />
+      {openModalDelete &&
+        <ModalDeleteQuestion
+          onCancel={() => setOpenModalDelete(false)}
+          onDelete={() => handleDeleteQuestion(idQuestion && idQuestion)}
+        />
+      }
+
+      {openModalCloseRoom &&
+        <ModalCloseRoom
+          onCancel={() => setOpenModalCloseRoom(false)}
+          onCloseRoom={handleEndRoom}
+        />
+      }
+
+      <Header isAdmin onEnd={() => setOpenModalCloseRoom(true)} />
       <ContainerMainRoom>
         <ContainerInfoRoom>
           <h2>Sala {title}</h2>
@@ -71,7 +107,15 @@ export function AdminRoom() {
                   avatar={question.author.avatar}
                   name={question.author.name}
 
-                  onDelete={() => handleDeleteQuestion(question.id)}
+                  isAnswered={question.isAnswered}
+                  isHighlighted={question.isHighlighted}
+
+                  onAnswered={() => handleAnsweredQuestion(question.id)}
+                  onHighlighted={() => handleHighlightedQuestion(question.id)}
+                  onDelete={() => {
+                    setOpenModalDelete(true)
+                    setIdQuestion(question.id)
+                  }}
                 />
               ))}
             </div>

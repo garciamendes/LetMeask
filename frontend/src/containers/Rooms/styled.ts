@@ -16,7 +16,7 @@ export const ContainerRoot = styled.div`
     flex-direction: column;
     align-items: center;
     overflow-y: auto;
-    height: 60%;
+    height: 93%;
     width: 100%;
 
     &::-webkit-scrollbar {
